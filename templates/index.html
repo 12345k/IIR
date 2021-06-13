@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IIR tool</title>
+</head>
+<body>
+    <center><h1>IIR Tool</h1></center>
+    </form>
+    <form action="/uploadfiles/" enctype="multipart/form-data" method="post">
+    <input name="file" type="file" multiple>
+    <input type="submit">
+    </form>
+
+    <h3>File Name: </h3> <p>{{ filename }}</p>
+
+    <h3>Extracted Text</h3> <br>
+    <p>{{ text }}</p>
+</body>
+</html>
