@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IIR tool</title>
 </head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script src="http://assets.annotateit.org/annotator/v1.1.0/annotator-full.min.js"></script>
+<link rel="stylesheet" href="http://assets.annotateit.org/annotator/v1.1.0/annotator.min.css">
+
 <body>
     <center><h1>IIR Tool</h1></center>
     </form>
@@ -17,6 +21,48 @@
     <h3>File Name: </h3> <p>{{ filename }}</p>
 
     <h3>Extracted Text</h3> <br>
-    <p>{{ text }}</p>
+    <p id="foo" name="annotate_text" >{{ text }}</p>
+   
+    <center>
+        <input type="button"
+        value="Select text" 
+        onmousedown="getSelectedText()">
+    </center>
+
+    <!--Form to show the selected text as output-->
+    <br>
+    <form name="testform">
+        <textarea name="selectedtext" 
+                  rows="5"
+                  cols="200"></textarea>
+    </form>
 </body>
+<script>
+   function getSelectedText(){
+    var selectedText = '';
+    
+    if(window.getSelection().baseNode.parentNode.id != "foo") return;
+    // window.getSelection
+    if (window.getSelection) {
+        selectedText = window.getSelection();
+        
+        var range = selectedText.getRangeAt(0);
+        var newNode = document.createElement("span");
+        newNode.setAttribute("style", "background-color: pink;");
+        range.surroundContents(newNode); 
+    }
+    // // document.getSelection
+    else  if (document.getSelection) {
+        selectedText = document.getSelection();
+    }
+    // document.selection
+    else if (document.selection) {
+        selectedText = 
+        document.selection.createRange().text;
+    } else return;
+    // To write the selected text into the textarea
+    document.testform.selectedtext.value = selectedText;
+   }
+
+</script>
 </html>

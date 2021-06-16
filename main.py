@@ -11,7 +11,6 @@ import uvicorn
 import random
 import string
 BasePath = "static"
-
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
@@ -25,12 +24,9 @@ def generate_random_id():
                                 string.digits, k = N))
     return res
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
 
 
-@app.get("/iir", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse)
 async def read_item(request: Request):
     return templates.TemplateResponse("index.html",{"request": request})
 
