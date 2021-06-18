@@ -18,10 +18,11 @@
     <input type="submit">
     </form>
 
-    <h3>File Name: </h3> <p>{{ filename }}</p>
+    <h3>File Name: </h3> <p>{{ filename }}ddfghdfhggchgghvhgvghvgvhvkg</p>
 
     <h3>Extracted Text</h3> <br>
-    <p id="foo" name="annotate_text" >{{ text }}</p>
+
+    <p class ="test" id="foo" name="annotate_text" >{{ text }}</p>
    
     <center>
         <input type="button"
@@ -39,10 +40,14 @@
 </body>
 <script>
    function getSelectedText(){
+       console.log("hello")
     var selectedText = '';
-    
-    if(window.getSelection().baseNode.parentNode.id != "foo") return;
+    // var window = Window.getWindow();
+    // if(window.getSelection.baseNode.parentNode.id != "foo") return;
     // window.getSelection
+    console.log(window.getSelection().anchorNode.parentNode)
+    console.log(window.getSelection().anchorNode.parentNode.className);
+    console.log(window.getSelection().anchorNode.parentNode.id)
     if (window.getSelection) {
         selectedText = window.getSelection();
         

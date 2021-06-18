@@ -3,7 +3,7 @@
 # Docker
 ```
 docker build -t iir -f Dockerfile .
-docker run -it -p 6001:80 iir 
+docker run -it -p 6001:6001 iir 
 ```
 # To Run the service
 ```python
