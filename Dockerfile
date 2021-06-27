@@ -33,7 +33,6 @@ RUN apt-get update
 RUN apt-get install -y libleptonica-dev 
 RUN apt-get install -y tesseract-ocr
 RUN apt-get install -y libtesseract-dev
-
 COPY ./app /app
 WORKDIR /app
 CMD ["python", "main.py"]
