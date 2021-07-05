@@ -12,31 +12,49 @@ import random
 import string
 import torch
 from pdfminer.high_level import extract_text
-
+from fastapi.middleware.cors import CORSMiddleware
 from NER.server.utils import preprocess_data, predict, idx2tag
+
+
 
 
 BasePath = "static"
 
 # For Model 
-from transformers import BertTokenizerFast, BertForTokenClassification
-MAX_LEN = 500
-NUM_LABELS = 13
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-MODEL_PATH = 'bert-base-uncased'
-STATE_DICT = torch.load("NER/Resume Model/model-state.bin_1", map_location=DEVICE)
-TOKENIZER = BertTokenizerFast("NER/vocab/vocab.txt", lowercase=True)
+# from transformers import BertTokenizerFast, BertForTokenClassification
+# MAX_LEN = 500
+# NUM_LABELS = 13
+# DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# MODEL_PATH = 'bert-base-uncased'
+# STATE_DICT = torch.load("NER/Resume Model/model-state.bin_1", map_location=DEVICE)
+# TOKENIZER = BertTokenizerFast("NER/vocab/vocab.txt", lowercase=True)
 
-model = BertForTokenClassification.from_pretrained(
-    'bert-base-uncased', state_dict=STATE_DICT['model_state_dict'], num_labels=NUM_LABELS)
-model.to(DEVICE)
+# model = BertForTokenClassification.from_pretrained(
+#     'bert-base-uncased', state_dict=STATE_DICT['model_state_dict'], num_labels=NUM_LABELS)
+# model.to(DEVICE)
 
 
 class Predict_method(BaseModel):
     URL: str
 
 app = FastAPI()
+
+origins = [
+    "http://annotateit.org"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/js", StaticFiles(directory="js"), name="js")
+
 templates = Jinja2Templates(directory="templates")
 
 

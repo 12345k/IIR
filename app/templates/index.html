@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IIR tool</title>
 </head>
-<!-- <link rel="stylesheet" href="http://assets.annotateit.org/annotator/v1.1.0/annotator.min.css"> -->
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js" type="text/javascript"></script>
+<script src= "{{ url_for('js', path='/annotator.min.js') }}" ></script>
+<link rel="stylesheet" href="{{ url_for('js', path='/annotator.min.css') }}">
 <body>
     <center><h1>IIR Tool</h1></center>
     </form>
@@ -16,56 +17,80 @@
     <input type="submit">
     </form>
 
-    <h3>File Name: </h3> <p>{{ filename }}ddfghdfhggchgghvhgvghvgvhvkg</p>
+    <h3>File Name: </h3> <p>{{ filename }}</p>
 
     <h3>Extracted Text</h3> <br>
 
-    <p class ="test" id="foo" name="annotate_text" >{{ text }}</p>
+    <p class ="test" id="foo" name="annotate_text" >{{ text }}gsfdsfgds</p>
    
-    <center>
-        <input type="button"
-        value="Select text" 
-        onmousedown="getSelectedText()">
-    </center>
-
-    <!--Form to show the selected text as output-->
     <br>
-    <form name="testform">
-        <textarea name="selectedtext" 
-                  rows="5"
-                  cols="200"></textarea>
-    </form>
+
+    
 </body>
 <script>
-   function getSelectedText(){
-       console.log("hello")
-    var selectedText = '';
-    // var window = Window.getWindow();
-    // if(window.getSelection.baseNode.parentNode.id != "foo") return;
-    // window.getSelection
-    console.log(window.getSelection().anchorNode.parentNode)
-    console.log(window.getSelection().anchorNode.parentNode.className);
-    console.log(window.getSelection().anchorNode.parentNode.id)
-    if (window.getSelection) {
-        selectedText = window.getSelection();
+    
+
+    var content = $('#foo').annotator();
+
+    // Add your plugin.
+    content.annotator('addPlugin', 'HelloWorld' /*, any other options */);
+
+    // jQuery(function ($) {
+    //     $('#foo').annotator()
+    //     .annotator('setupPlugins', {}, {
+    //                // Disable the tags plugin
+    //                Tags: false,
+    //                // Filter plugin options
+    //                Filter: {
+    //                  addAnnotationFilter: false, // Turn off default annotation filter
+    //                  filters: [{label: 'Quote', property: 'quote'}] // Add a quote filter
+    //                }
+    //              });
+    // });
+
+    // var ann = new Annotator(document.body); 
+    
+    // ann.start();
+    // if (typeof annotator === 'undefined') {
+    //     alert("Oops! it looks like you haven't built Annotator. " +
+    //           "Either download a tagged release from GitHub, or build the " +
+    //           "package by running `make`");
+    //   } else {
+    //     var app = new annotator.App();
+    //     app.include(annotator.ui.main);
+    //     app.start();
+    //   }
+
+
+//    function getSelectedText(){
+//        console.log("hello")
+//     var selectedText = '';
+//     // var window = Window.getWindow();
+//     // if(window.getSelection.baseNode.parentNode.id != "foo") return;
+//     // window.getSelection
+//     console.log(window.getSelection().anchorNode.parentNode)
+//     console.log(window.getSelection().anchorNode.parentNode.className);
+//     console.log(window.getSelection().anchorNode.parentNode.id)
+//     if (window.getSelection) {
+//         selectedText = window.getSelection();
         
-        var range = selectedText.getRangeAt(0);
-        var newNode = document.createElement("span");
-        newNode.setAttribute("style", "background-color: pink;");
-        range.surroundContents(newNode); 
-    }
-    // // document.getSelection
-    else  if (document.getSelection) {
-        selectedText = document.getSelection();
-    }
-    // document.selection
-    else if (document.selection) {
-        selectedText = 
-        document.selection.createRange().text;
-    } else return;
-    // To write the selected text into the textarea
-    document.testform.selectedtext.value = selectedText;
-   }
+//         var range = selectedText.getRangeAt(0);
+//         var newNode = document.createElement("span");
+//         newNode.setAttribute("style", "background-color: pink;");
+//         range.surroundContents(newNode); 
+//     }
+//     // // document.getSelection
+//     else  if (document.getSelection) {
+//         selectedText = document.getSelection();
+//     }
+//     // document.selection
+//     else if (document.selection) {
+//         selectedText = 
+//         document.selection.createRange().text;
+//     } else return;
+//     // To write the selected text into the textarea
+//     document.testform.selectedtext.value = selectedText;
+//    }
 
 </script>
 </html>
