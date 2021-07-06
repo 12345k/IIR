@@ -1,3 +1,4 @@
+from typing import List
 from pydantic import BaseModel
 from fastapi import FastAPI, Request, File, UploadFile
 from fastapi.responses import HTMLResponse
@@ -13,8 +14,15 @@ import string
 import torch
 from pdfminer.high_level import extract_text
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from NER.server.utils import preprocess_data, predict, idx2tag
+import pandas as pd
+import io
 
+path = "./data/annotation.csv"
+if not os.path.isfile(path):
+    df=pd.DataFrame(columns=["quote","ranges","text"])
+    df.to_csv(path,index=False)
 
 
 
@@ -37,6 +45,12 @@ BasePath = "static"
 class Predict_method(BaseModel):
     URL: str
 
+class AnnotationData(BaseModel):
+    quote:str
+    ranges: List
+    text: str
+    
+    # {"quote":"gsfdsfgds","ranges":[{"start":"/p[2]","startOffset":0,"end":"/p[2]","endOffset":9}],"text":"dsffsd"}
 app = FastAPI()
 
 origins = [
@@ -91,6 +105,53 @@ def predict_Method(req_obj:Predict_method):
     entities = predict(model, TOKENIZER, idx2tag,DEVICE, resume_text, MAX_LEN)
     return{'entities': entities}
 
+
+@app.post("/store/annotations")
+def annotation(req_obj:AnnotationData):
+   
+    temp = pd.DataFrame(req_obj.__dict__)
+    df = pd.read_csv(path)
+    df =pd.concat([df,temp])
+    # df = df.drop_duplicates()
+    df.to_csv(path,index=False)
+    return {'request': req_obj}
+
+@app.get("/store/search")
+def search():
+     return{}
+
+@app.get("/download/annotations")
+def download():
+    df = pd.read_csv(path)
+    
+    stream = io.StringIO()
+
+    df.to_csv(stream, index = False)
+
+    response = StreamingResponse(iter([stream.getvalue()]),
+                        media_type="text/csv"
+    )
+
+    response.headers["Content-Disposition"] = "attachment; filename=export.csv"
+
+    return response
+
+
+@app.get("/download/ocrtext")
+def ocrtext():
+    df = pd.read_csv(path)
+    
+    stream = io.StringIO()
+
+    df.to_csv(stream, index = False)
+
+    response = StreamingResponse(iter([stream.getvalue()]),
+                        media_type="text/csv"
+    )
+
+    response.headers["Content-Disposition"] = "attachment; filename=export.csv"
+
+    return response
 
 
 if __name__ == '__main__':

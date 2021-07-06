@@ -25,15 +25,70 @@
    
     <br>
 
+    </form>
+    <form action="/download/annotations">
+  
+    <input type="submit" value="Download annotations"></input>
+    </form>
+
+    <form action="/download/ocrtext">
+  
+    <input type="submit" value="Download text"></input>
+    </form>
+    
     
 </body>
 <script>
-    
+// function custom_ui_main(){
+//   return {
+//         start: function (app) {
+//             app.notify("Hello, geeks!");
+//         }
+//     };
+// }
+var custom_ui_main = function () {
+    var element = document.querySelector("#relativeLocation");
+    var makeAnnotation = UtilityService.annotationFactory(element, ".annotator-hl");
+    var ui = { interactionPoint: null };
+    return {start: function start() 
+        {ui.highlighter = new annotator.ui.highlighter.Highlighter(element);
+            ui.textselector = new annotator.ui.textselector.TextSelector(element, 
+                {onSelection: function onSelection(ranges, event) 
+                    {if (ranges.length > 0)
+                        {annotation = makeAnnotation(ranges);
+                        var commentModalPosition = UtilityService.mousePosition(event);
+                        // document.getElementById("commentEditContainer").style.display = "block";
+                    } }});},destroy: function destroy() 
+                    {ui.highlighter.destroy();ui.textselector.destroy();},
+                    annotationCreated: function annotationCreated(a)
+                     {ui.highlighter.draw(a);},
+                     annotationsLoaded: function annotationsLoaded(a) 
+                     {ui.highlighter.drawAll(a).then(
+                         function () {},
+                         annotationDeleted: function annotationDeleted(a)
+                          {ui.highlighter.undraw(a);},
+                          annotationUpdated: function annotationUpdated(a) {
+                              ui.highlighter.redraw(a);}};}
+var app = new annotator.App();
+    app.include(annotator.ui.main);
+    app.include(annotator.storage.http);
+    // app.start();
+    app
+    .start()
+    .then(function () {
+        app.annotations.load();
+    });
 
-    var content = $('#foo').annotator();
+    // var app = new annotator.App();
+    // app.include(annotator.ui.main);
+    // app.include(annotator.storage.http);
+    // app
+    // .start()
+    // .then(function () {
+    //     app.annotations.load();
+    // });
 
-    // Add your plugin.
-    content.annotator('addPlugin', 'HelloWorld' /*, any other options */);
+    // var content = $('#foo').annotator();
 
     // jQuery(function ($) {
     //     $('#foo').annotator()

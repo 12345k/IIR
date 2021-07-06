@@ -1,0 +1,9 @@
+quote,ranges,text
+a,"{'start': '/p[2]', 'startOffset': 27, 'end': '/p[2]', 'endOffset': 28}",sda
+Simple,"{'start': '/p[2]', 'startOffset': 2, 'end': '/p[2]', 'endOffset': 8}",test
+"mple PDF File
+
+This is a small demonstration","{'start': '/p[2]', 'startOffset': 4, 'end': '/p[2]', 'endOffset': 48}",first annotation
+"A Simple PDF File
+
+This is a small de","{'start': '/p[2]', 'startOffset': 0, 'end': '/p[2]', 'endOffset': 37}",g
